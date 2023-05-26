@@ -10,10 +10,15 @@ interface IBaseLayoutProps {
 const BaseLayout: React.FC<IBaseLayoutProps> = ({ children }) => {
   return (
     <main
-      className={clsx("flex min-h-screen flex-col bg-base", inter.className)}
+      className={clsx(
+        "flex min-h-screen flex-col items-center bg-base",
+        inter.className
+      )}
     >
       <Navbar />
-      <div className="mt-16">{children}</div>
+      <div className="container mt-16 flex w-full flex-col items-center">
+        {children}
+      </div>
     </main>
   );
 };

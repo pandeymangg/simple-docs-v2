@@ -19,6 +19,8 @@ const Home: NextPage = () => {
             Simple Docs home page...
           </h2>
         </div>
+
+        <AuthShowcase />
       </div>
     </>
   );
