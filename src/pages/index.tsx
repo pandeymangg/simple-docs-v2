@@ -4,8 +4,6 @@ import Head from "next/head";
 import { api } from "@/utils/api";
 
 const Home: NextPage = () => {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
-
   return (
     <>
       <Head>
@@ -19,9 +17,9 @@ const Home: NextPage = () => {
             Simple Docs home page...
           </h2>
         </div>
-
-        <AuthShowcase />
       </div>
+
+      <AuthShowcase />
     </>
   );
 };
