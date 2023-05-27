@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Sun, Moon } from "lucide-react";
 import { useTheme } from "next-themes";
 import clsx from "clsx";
 
 const ThemeToggle = () => {
-  const { setTheme, theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  const { theme, setTheme } = useTheme();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <div className="flex items-center justify-center gap-4 rounded-lg border border-flamingo bg-mantle px-2 py-1">

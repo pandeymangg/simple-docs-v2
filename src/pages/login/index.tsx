@@ -19,7 +19,7 @@ const LoginPage: NextPage = () => {
           onClick={() => {
             void handleGithubSignIn();
           }}
-          className="w-full rounded-lg border border-flamingo bg-surface2 py-4 hover:bg-surface1"
+          className="w-full rounded-lg border-2 border-teal bg-surface2 py-4 hover:bg-surface1 dark:border-flamingo"
         >
           <div className="flex w-full items-center justify-center gap-4">
             <button>
