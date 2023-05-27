@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Sun, Moon } from "lucide-react";
-import { useTheme } from "next-themes";
 import clsx from "clsx";
+import { useTheme } from "next-themes";
 
 const ThemeToggle = () => {
+  const { setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
-  const { theme, setTheme } = useTheme();
 
   useEffect(() => {
     setMounted(true);
@@ -16,17 +16,15 @@ const ThemeToggle = () => {
   }
 
   return (
-    <div className="flex items-center justify-center gap-4 rounded-lg border border-flamingo bg-mantle px-2 py-1">
+    <div className="border-flamingo flex items-center justify-center gap-4 rounded-lg border px-2 py-1">
       <Sun
-        onClick={() => setTheme("light")}
+        onClick={() => setTheme("rosepineDawn")}
         className={clsx("cursor-pointer")}
-        color={theme === "light" ? "var(--yellow)" : "var(--surface2)"}
         size={24}
       />
       <Moon
-        onClick={() => setTheme("dark")}
+        onClick={() => setTheme("rosepine")}
         className="cursor-pointer"
-        color={theme === "dark" ? "var(--sapphire)" : "var(--surface2)"}
         size={24}
       />
     </div>

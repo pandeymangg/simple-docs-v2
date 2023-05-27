@@ -11,7 +11,7 @@ const BaseLayout: React.FC<IBaseLayoutProps> = ({ children }) => {
   return (
     <main
       className={clsx(
-        "flex min-h-screen flex-col items-center bg-base",
+        "flex min-h-screen flex-col items-center",
         inter.className
       )}
     >

@@ -1,57 +1,80 @@
 import React from "react";
 import { sourceSansPro } from "@/lib/fonts";
-import ThemeToggle from "@/ui/ThemeToggle";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { Conditional } from "@pandeymangg/react-conditional";
+import clsx from "clsx";
+import { Palette } from "lucide-react";
+import { useTheme } from "next-themes";
 
 const Navbar = () => {
+  const { setTheme } = useTheme();
   const { data } = useSession();
 
   return (
-    <div className="navbar__wrapper fixed top-0 flex h-16 w-full justify-center px-4">
-      <nav className="navbar__container container flex items-center justify-between pt-4">
-        <div className="navbar__logo">
-          <h1
-            className={`${sourceSansPro.className} text-4xl font-bold text-text`}
+    <div className="navbar">
+      <div className="flex-1">
+        <a
+          className={clsx(
+            "btn-ghost btn text-xl normal-case",
+            sourceSansPro.className
+          )}
+        >
+          Simple Docs
+        </a>
+      </div>
+      <div className="flex-none">
+        <div className="dropdown-end dropdown">
+          <label tabIndex={0} className="btn-ghost btn-circle avatar btn">
+            <Palette size={24} />
+          </label>
+          <ul
+            tabIndex={0}
+            className="dropdown-content menu rounded-box menu-compact mt-3 w-52 bg-base-100 p-2 shadow"
           >
-            Simple Docs
-          </h1>
+            <li>
+              <div onClick={() => setTheme("rosepine")}>Rose Pine</div>
+            </li>
+            <li>
+              <div onClick={() => setTheme("rosepineMoon")}>Rose Pine Moon</div>
+            </li>
+            <li>
+              <div onClick={() => setTheme("rosepineDawn")}>Rose Pine Dawn</div>
+            </li>
+          </ul>
         </div>
 
-        <div className="flex items-center gap-4">
-          <ThemeToggle />
-
-          <div className="overflow-hidden rounded-full border-2 border-overlay2">
-            <Conditional
-              condition={!!data?.user}
-              fallback={
-                <Image
-                  src={"/images/user.png"}
-                  alt="user avatar"
-                  width={32}
-                  height={32}
-                  className="overflow-hidden rounded-full"
-                  style={{
-                    objectFit: "cover",
-                  }}
-                />
-              }
-            >
-              <Image
-                src={data?.user?.image ?? ""}
-                alt="user avatar"
-                width={32}
-                height={32}
-                className="overflow-hidden rounded-full"
-                style={{
-                  objectFit: "cover",
-                }}
-              />
-            </Conditional>
-          </div>
+        <div className="dropdown-end dropdown">
+          <label tabIndex={0} className="btn-ghost btn-circle btn">
+            <Image
+              src={data?.user?.image || "/images/user.png"}
+              style={{
+                objectFit: "cover",
+              }}
+              width={32}
+              height={32}
+              alt="avatar"
+              className="overflow-hidden rounded-full"
+            />
+          </label>
+          <ul
+            tabIndex={0}
+            className="dropdown-content menu rounded-box menu-compact mt-3 w-52 bg-base-100 p-2 shadow"
+          >
+            <li>
+              <a className="justify-between">
+                Profile
+                <span className="badge">New</span>
+              </a>
+            </li>
+            <li>
+              <a>Settings</a>
+            </li>
+            <li>
+              <a>Logout</a>
+            </li>
+          </ul>
         </div>
-      </nav>
+      </div>
     </div>
   );
 };

@@ -11,7 +11,11 @@ const MyApp: AppType<{ session: Session | null }> = ({
   pageProps: { session, ...pageProps },
 }) => {
   return (
-    <ThemeProvider attribute="class" enableSystem defaultTheme="light">
+    <ThemeProvider
+      attribute="data-theme"
+      enableSystem
+      defaultTheme="rosepineDawn"
+    >
       <SessionProvider session={session}>
         <BaseLayout>
           <Component {...pageProps} />
