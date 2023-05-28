@@ -135,9 +135,18 @@ const verifyCurrentUserHasDocAccessInputSchema = z.object({
 
 export const verifyCurrentUserHasDocAccess = t.middleware(
   async ({ ctx, input, next }) => {
-    console.log({ input });
     const { session } = ctx;
-    const { docId } = verifyCurrentUserHasDocAccessInputSchema.parse(input);
+
+    const result = verifyCurrentUserHasDocAccessInputSchema.safeParse(input);
+
+    if (!result.success) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "Invalid Input",
+      });
+    }
+
+    const { docId } = result.data;
 
     if (!session || !session.user) {
       throw new TRPCError({

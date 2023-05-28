@@ -4,9 +4,7 @@ import {
   protectedProcedure,
   verifyCurrentUserHasDocAccess,
 } from "@/server/api/trpc";
-import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
-import Trpc from "@/pages/api/trpc/[trpc]";
 
 export const docRouter = createTRPCRouter({
   create: protectedProcedure

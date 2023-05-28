@@ -14,7 +14,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
     <ThemeProvider
       attribute="data-theme"
       enableSystem
-      defaultTheme="rosepineDawn"
+      defaultTheme="catppuccin-latte"
     >
       <SessionProvider session={session}>
         <BaseLayout>

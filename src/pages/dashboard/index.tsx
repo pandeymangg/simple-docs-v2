@@ -2,14 +2,15 @@ import { api } from "@/utils/api";
 import { Conditional } from "@pandeymangg/react-conditional";
 import type { NextPage } from "next";
 import React from "react";
-import { Loader2 } from "lucide-react";
-import { Plus, FileText, Trash2 } from "lucide-react";
+import { Loader2, Plus } from "lucide-react";
+import { FileText, Trash2 } from "lucide-react";
 import { useRouter } from "next/router";
+import CreateDocForm from "@/components/form";
+import { CREATE_FORM_MODAL_ID } from "@/lib/constants";
 
 const DashboardPage: NextPage = () => {
   const router = useRouter();
   const { data: allDocs, isLoading, isFetching } = api.doc.getAll.useQuery();
-  const { mutate: createDoc } = api.doc.create.useMutation();
   const { mutate: deleteDoc } = api.doc.deleteDocById.useMutation();
 
   const utils = api.useContext();
@@ -29,31 +30,25 @@ const DashboardPage: NextPage = () => {
             <h3 className="text-cpText">Start a new document</h3>
 
             <div className="flex flex-col gap-2">
-              <div
-                className="flex w-full min-w-[80px]
-               max-w-[120px] cursor-pointer items-center justify-center
-               rounded-sm border border-cpOverlay0 bg-cpMantle hover:border-cpMauve"
-                style={{
-                  aspectRatio: "3/4",
-                }}
-                onClick={() => {
-                  createDoc(
-                    {
-                      title: "Untitled",
-                    },
-                    {
-                      onSuccess: (data) => {
-                        const { id } = data;
-                        void router.push(`/doc/${id}`);
-                      },
-                    }
-                  );
-                }}
-              >
-                <Plus size={64} className="text-cpMauve" />
-              </div>
+              <label htmlFor={CREATE_FORM_MODAL_ID}>
+                <div className="flex flex-col gap-1">
+                  <div
+                    className="
+                    flex w-full min-w-[80px] max-w-[120px] cursor-pointer
+                    items-center justify-center rounded-sm border 
+                    border-cpOverlay0 bg-cpMantle hover:border-cpMauve"
+                    style={{
+                      aspectRatio: "3/4",
+                    }}
+                  >
+                    <Plus size={64} className="text-cpMauve" />
+                  </div>
 
-              <p className="text-sm font-medium text-cpText">Blank</p>
+                  <p className="text-sm font-medium text-cpText">Blank</p>
+                </div>
+              </label>
+
+              <CreateDocForm />
             </div>
           </div>
         </div>
@@ -74,7 +69,7 @@ const DashboardPage: NextPage = () => {
               </div>
             </Conditional>
             <Conditional condition={!!allDocs && allDocs?.length > 0}>
-              <div className="mt-6 flex flex-wrap justify-between gap-4">
+              <div className="mt-6 flex flex-wrap gap-4">
                 {allDocs?.map((doc) => (
                   <div
                     key={doc.id}
@@ -107,6 +102,9 @@ const DashboardPage: NextPage = () => {
                             {
                               onSuccess: () => {
                                 void utils.doc.getAll.invalidate();
+                              },
+                              onError: (err) => {
+                                console.log({ err });
                               },
                             }
                           )
