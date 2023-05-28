@@ -1,10 +1,11 @@
-import { Inter, Source_Sans_Pro } from "next/font/google";
+import { Noto_Sans, Lato } from "next/font/google";
 
-export const inter = Inter({
+export const notoSans = Noto_Sans({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
-export const sourceSansPro = Source_Sans_Pro({
+export const lato = Lato({
   subsets: ["latin"],
-  weight: ["400", "600", "700"],
+  weight: ["400", "700", "900"],
 });

@@ -3,6 +3,7 @@ import { Conditional } from "@pandeymangg/react-conditional";
 import type { NextPage } from "next";
 import React from "react";
 import { Loader2 } from "lucide-react";
+import { Plus } from "lucide-react";
 
 const DashboardPage: NextPage = () => {
   const { data: allDocs, isLoading } = api.doc.getAll.useQuery();
@@ -13,43 +14,29 @@ const DashboardPage: NextPage = () => {
   if (isLoading)
     return (
       <div className="flex h-screen items-center justify-center">
-        <Loader2 size={48} />
+        <Loader2 className="h-12 w-12 animate-spin text-primary" size={48} />
       </div>
     );
 
   return (
-    <div className="mt-8">
-      <div className="w-96 rounded-lg border border-mauve p-4">
-        <h1 className="text-center text-3xl font-bold text-subtext1">
-          Dashboard
-        </h1>
-        <div className="flex flex-col items-center justify-center gap-4">
-          <button
-            className="mt-4 rounded-lg bg-surface0 px-4 py-2 text-text hover:bg-surface1"
-            onClick={() => {
-              createDoc(
-                { title: "Untitled", content: "" },
-                {
-                  onSuccess: () => {
-                    void utils.doc.getAll.invalidate();
-                  },
-                }
-              );
-            }}
-          >
-            + Create
-          </button>
+    <div className="flex w-full flex-col bg-cpCrust">
+      <div className="container mx-auto w-full p-4">
+        <div className="flex flex-col gap-4">
+          <h3 className="text-cpText">Start a new document</h3>
 
-          <div className="flex flex-col items-center gap-4">
-            <Conditional condition={!!allDocs?.length}>
-              {allDocs?.map((doc) => (
-                <div key={doc.id}>
-                  <p className="text-[16px] font-medium text-text">
-                    {doc.title}
-                  </p>
-                </div>
-              ))}
-            </Conditional>
+          <div className="flex flex-col gap-2">
+            <div
+              className="flex w-full min-w-[80px]
+               max-w-[120px] cursor-pointer items-center justify-center
+               rounded-sm border border-cpOverlay0 bg-cpMantle hover:border-cpMauve"
+              style={{
+                aspectRatio: "3/4",
+              }}
+            >
+              <Plus size={64} className="text-cpMauve" />
+            </div>
+
+            <p className="text-cpText">Blank</p>
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "../navigation/Navbar";
-import { inter } from "@/lib/fonts";
+import { notoSans } from "@/lib/fonts";
 import clsx from "clsx";
 
 interface IBaseLayoutProps {
@@ -11,12 +11,12 @@ const BaseLayout: React.FC<IBaseLayoutProps> = ({ children }) => {
   return (
     <main
       className={clsx(
-        "flex min-h-screen flex-col items-center",
-        inter.className
+        "flex min-h-screen flex-col items-center bg-cpBase",
+        notoSans.className
       )}
     >
       <Navbar />
-      <div className="container mt-16 flex w-full flex-col items-center">
+      <div className="flex w-full flex-col items-center text-cpText">
         {children}
       </div>
     </main>
