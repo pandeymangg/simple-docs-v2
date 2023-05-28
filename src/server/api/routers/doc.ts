@@ -1,5 +1,12 @@
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  verifyCurrentUserHasDocAccess,
+} from "@/server/api/trpc";
+import { Prisma } from "@prisma/client";
+import { TRPCError } from "@trpc/server";
+import Trpc from "@/pages/api/trpc/[trpc]";
 
 export const docRouter = createTRPCRouter({
   create: protectedProcedure
@@ -33,6 +40,27 @@ export const docRouter = createTRPCRouter({
       return ctx.prisma.doc.findFirst({
         where: {
           id: input.id,
+        },
+      });
+    }),
+
+  deleteDocById: protectedProcedure
+    .input(z.object({ docId: z.string() }))
+    .use(verifyCurrentUserHasDocAccess)
+    .mutation(async ({ ctx, input }) => {
+      const { isUserAuthorizedToAccessDoc, prisma } = ctx;
+      const { docId } = input;
+
+      if (!isUserAuthorizedToAccessDoc) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "You are not authorized to delete this doc",
+        });
+      }
+
+      return prisma.doc.delete({
+        where: {
+          id: docId,
         },
       });
     }),

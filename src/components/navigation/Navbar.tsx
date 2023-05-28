@@ -12,7 +12,7 @@ const Navbar: React.FC = () => {
   const { data } = useSession();
 
   return (
-    <nav className="navbar flex h-16 w-full items-center justify-center px-6 shadow-lg">
+    <nav className="navbar fixed top-0 z-50 flex h-16 w-full items-center justify-center bg-cpBase px-6 shadow-lg">
       <div className="container flex h-full items-center justify-between">
         <div className="flex-1">
           <Link

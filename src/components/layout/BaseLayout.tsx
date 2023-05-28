@@ -16,7 +16,7 @@ const BaseLayout: React.FC<IBaseLayoutProps> = ({ children }) => {
       )}
     >
       <Navbar />
-      <div className="flex w-full flex-col items-center text-cpText">
+      <div className="mt-16 flex w-full flex-col items-center text-cpText">
         {children}
       </div>
     </main>

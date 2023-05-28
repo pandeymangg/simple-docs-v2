@@ -11,7 +11,7 @@ import { initTRPC, TRPCError } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import { type Session } from "next-auth";
 import superjson from "superjson";
-import { ZodError } from "zod";
+import { z, ZodError } from "zod";
 import { getServerAuthSession } from "@/server/auth";
 import { prisma } from "@/server/db";
 
@@ -128,3 +128,35 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
  * @see https://trpc.io/docs/procedures
  */
 export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
+
+const verifyCurrentUserHasDocAccessInputSchema = z.object({
+  docId: z.string(),
+});
+
+export const verifyCurrentUserHasDocAccess = t.middleware(
+  async ({ ctx, input, next }) => {
+    console.log({ input });
+    const { session } = ctx;
+    const { docId } = verifyCurrentUserHasDocAccessInputSchema.parse(input);
+
+    if (!session || !session.user) {
+      throw new TRPCError({
+        code: "UNAUTHORIZED",
+        message: "You must be logged in to access this doc.",
+      });
+    }
+
+    const docCount = await prisma.doc.count({
+      where: {
+        id: docId,
+        authorId: session.user.id,
+      },
+    });
+
+    return next({
+      ctx: {
+        isUserAuthorizedToAccessDoc: docCount > 0,
+      },
+    });
+  }
+);
