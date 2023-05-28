@@ -1,6 +1,6 @@
-import { Noto_Sans, Lato } from "next/font/google";
+import { Poppins, Lato } from "next/font/google";
 
-export const notoSans = Noto_Sans({
+export const poppins = Poppins({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
 });

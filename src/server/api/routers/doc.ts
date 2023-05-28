@@ -6,14 +6,14 @@ export const docRouter = createTRPCRouter({
     .input(
       z.object({
         title: z.string(),
-        content: z.string(),
+        content: z.string().optional(),
       })
     )
     .mutation(({ ctx, input }) => {
       return ctx.prisma.doc.create({
         data: {
           title: input.title,
-          content: input.content,
+          content: input.content ?? "",
           authorId: ctx.session.user.id,
         },
       });
@@ -26,4 +26,14 @@ export const docRouter = createTRPCRouter({
       },
     });
   }),
+
+  getDocById: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .query(({ ctx, input }) => {
+      return ctx.prisma.doc.findFirst({
+        where: {
+          id: input.id,
+        },
+      });
+    }),
 });
