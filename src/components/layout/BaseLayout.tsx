@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "../navigation/Navbar";
-import { poppins } from "@/lib/fonts";
+import { workSans } from "@/lib/fonts";
 import clsx from "clsx";
 
 interface IBaseLayoutProps {
@@ -12,7 +12,7 @@ const BaseLayout: React.FC<IBaseLayoutProps> = ({ children }) => {
     <main
       className={clsx(
         "flex min-h-screen flex-col items-center bg-cpBase",
-        poppins.className
+        workSans.className
       )}
     >
       <Navbar />

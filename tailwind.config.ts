@@ -4,6 +4,11 @@ export default {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   darkMode: "media",
   theme: {
+    extend: {
+      borderRadius: {
+        med: "0.25rem",
+      },
+    },
     colors: {
       cpRosewater: "var(--rosewater)",
       cpFlamingo: "var(--flamingo)",

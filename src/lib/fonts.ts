@@ -1,11 +1,6 @@
-import { Poppins, Lato } from "next/font/google";
+import { Work_Sans } from "next/font/google";
 
-export const poppins = Poppins({
+export const workSans = Work_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
-});
-
-export const lato = Lato({
-  subsets: ["latin"],
-  weight: ["400", "700", "900"],
 });

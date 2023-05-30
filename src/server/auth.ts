@@ -6,6 +6,7 @@ import {
   type DefaultSession,
 } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
+import CredentialsProvider from "next-auth/providers/credentials";
 import { env } from "@/env.mjs";
 import { prisma } from "@/server/db";
 
@@ -23,11 +24,6 @@ declare module "next-auth" {
       // role: UserRole;
     } & DefaultSession["user"];
   }
-
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
 }
 
 /**
@@ -54,6 +50,30 @@ export const authOptions: NextAuthOptions = {
       clientId: env.GITHUB_CLIENT_ID,
       clientSecret: env.GITHUB_CLIENT_SECRET,
     }),
+    // CredentialsProvider({
+    //   name: "Sign In",
+    //   authorize: async (credentials) => {
+    //     const user = {
+    //       id: "random",
+    //       name: "random user",
+    //       email: "test@test.com",
+    //       password: "test1234",
+    //       image: null,
+    //     };
+    //     return user;
+    //   },
+    //   credentials: {
+    //     email: {
+    //       label: "Email",
+    //       type: "email",
+    //       placeholder: "hello@example.com",
+    //     },
+    //     password: {
+    //       label: "Password",
+    //       type: "password",
+    //     },
+    //   },
+    // }),
     /**
      * ...add more providers here.
      *

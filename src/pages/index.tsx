@@ -1,4 +1,5 @@
 import { type NextPage } from "next";
+import { useSession, signOut } from "next-auth/react";
 import Head from "next/head";
 
 const Home: NextPage = () => {
@@ -15,8 +16,25 @@ const Home: NextPage = () => {
             Simple Docs home page...
           </h2>
         </div>
+
+        <AuthShowcase />
       </div>
     </>
+  );
+};
+
+const AuthShowcase: React.FC = () => {
+  const { data: session, status } = useSession();
+
+  return (
+    <div className="flex flex-col">
+      <p className="text-2xl">{status}</p>
+      <p>{JSON.stringify(session, null, 2)}</p>
+
+      <button className="btn" onClick={() => void signOut()}>
+        Logout
+      </button>
+    </div>
   );
 };
 
