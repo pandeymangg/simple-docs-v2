@@ -94,15 +94,15 @@ const Navbar: React.FC = () => {
                 tabIndex={0}
                 className="dropdown-content menu menu-compact mt-4 min-w-[240px] rounded-lg border border-cpSurface0 bg-cpCrust p-4 shadow"
               >
-                <div className="flex w-full flex-col gap-4">
+                <div className="flex w-full flex-col items-center justify-center gap-4">
                   <div>
                     <FileText size={64} className="text-cpFlamingo" />
                   </div>
-                  <h1 className="text-2xl font-semibold text-cpText">
+                  <h1 className="text-center text-2xl font-semibold leading-tight text-cpText">
                     Sign up or log in to Simple Docs
                   </h1>
 
-                  <p className="font-medium text-cpSubtext0">
+                  <p className="text-center font-medium text-cpSubtext0">
                     Takes less than a few seconds.
                   </p>
 
