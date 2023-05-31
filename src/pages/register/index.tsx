@@ -5,11 +5,11 @@ import {
 import { api } from "@/utils/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Conditional } from "@pandeymangg/react-conditional";
-import { TRPCError } from "@trpc/server";
 import type { NextPage } from "next";
 import React from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
+import { signIn } from "next-auth/react";
 
 const RegisterPage: NextPage = () => {
   const {
@@ -29,8 +29,8 @@ const RegisterPage: NextPage = () => {
         password: data.password,
       },
       {
-        onSuccess: (data) => {
-          console.log("success", data);
+        onSuccess: (data, { email, password }) => {
+          void signIn("credentials", { email, password, callbackUrl: "/" });
         },
 
         onError: (err) => {
