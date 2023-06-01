@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo } from "react";
 import {
   createBlockquotePlugin,
   createBoldPlugin,
@@ -11,13 +11,10 @@ import {
   createUnderlinePlugin,
   Plate,
   type PlatePlugin,
-  Toolbar,
-  ToolbarButton,
   type Value,
   createPlugins,
 } from "@udecode/plate";
 
-import { Bold, Italic, Underline } from "lucide-react";
 import { plateUI } from "./common/plateUi";
 import PlateToolbar from "./toolbar/PlateToolbar";
 
@@ -36,26 +33,34 @@ const platePlugins: PlatePlugin[] = [
 
 const plugins = createPlugins(platePlugins, { components: plateUI });
 
-const PlateEditor = () => {
-  const [editorValue, setEditorValue] = useState<Value>();
+const PlateEditor: React.FC<{
+  editorValue: string;
+  setEditorValue: React.Dispatch<React.SetStateAction<string>>;
+  onChange: (newValue: string) => void;
+}> = ({ editorValue, setEditorValue, onChange }) => {
+  const onEditorValueChange = (newValue: Value) => {
+    setEditorValue(JSON.stringify(newValue));
+
+    onChange(JSON.stringify(newValue));
+  };
+
+  const editorInitialValue = useMemo(() => {
+    if (editorValue) {
+      return JSON.parse(editorValue) as Value;
+    }
+
+    return undefined;
+  }, [editorValue]);
 
   return (
     <div className="flex flex-col gap-4">
       <Plate
-        onChange={(newValue) => setEditorValue(newValue)}
-        initialValue={[
-          {
-            type: "p",
-            children: [
-              {
-                text: "This is editable plain text with react and history plugins, just like a <textarea>!",
-              },
-            ],
-          },
-        ]}
+        onChange={(newValue) => onEditorValueChange(newValue)}
+        initialValue={editorInitialValue}
         plugins={plugins}
         editableProps={{
           className: "relative focus:outline-none p-4 mt-4",
+          placeholder: "Start typing...",
         }}
       >
         <div className="absolute ml-2">

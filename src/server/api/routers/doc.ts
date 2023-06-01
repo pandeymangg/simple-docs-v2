@@ -65,7 +65,11 @@ export const docRouter = createTRPCRouter({
 
   updateDocById: protectedProcedure
     .input(
-      z.object({ docId: z.string(), title: z.string(), content: z.string() })
+      z.object({
+        docId: z.string(),
+        title: z.string().optional(),
+        content: z.string().optional(),
+      })
     )
     .use(verifyCurrentUserHasDocAccess)
     .mutation(async ({ ctx, input }) => {
@@ -84,8 +88,8 @@ export const docRouter = createTRPCRouter({
           id: docId,
         },
         data: {
-          title: title,
-          content: content,
+          title,
+          content,
         },
       });
     }),
