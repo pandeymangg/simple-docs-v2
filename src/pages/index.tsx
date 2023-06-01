@@ -1,8 +1,15 @@
+import { Conditional } from "@pandeymangg/react-conditional";
 import { type NextPage } from "next";
 import { useSession, signOut } from "next-auth/react";
 import Head from "next/head";
+import { useRouter } from "next/navigation";
 
 const Home: NextPage = () => {
+  const { data: session, status } = useSession();
+  const isAuthenticated = status === "authenticated";
+
+  const router = useRouter();
+
   return (
     <>
       <Head>
@@ -15,26 +22,30 @@ const Home: NextPage = () => {
           <h2 className="text-subtext1 text-center text-4xl font-bold">
             Simple Docs home page...
           </h2>
-        </div>
 
-        <AuthShowcase />
+          <div className="flex flex-col items-center justify-center">
+            <Conditional
+              condition={isAuthenticated}
+              fallback={
+                <button
+                  className="btn-primary btn capitalize"
+                  onClick={() => router.push("/login")}
+                >
+                  Log In
+                </button>
+              }
+            >
+              <button
+                className="btn-primary btn capitalize"
+                onClick={() => router.push("/dashboard")}
+              >
+                Dashboard
+              </button>
+            </Conditional>
+          </div>
+        </div>
       </div>
     </>
-  );
-};
-
-const AuthShowcase: React.FC = () => {
-  const { data: session, status } = useSession();
-
-  return (
-    <div className="flex flex-col">
-      <p className="text-2xl">{status}</p>
-      <p>{JSON.stringify(session, null, 2)}</p>
-
-      <button className="btn" onClick={() => void signOut()}>
-        Logout
-      </button>
-    </div>
   );
 };
 

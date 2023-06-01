@@ -60,7 +60,6 @@ const UpdateDocForm: React.FC<{
 
   return (
     <div className="container mx-auto flex w-full flex-col gap-8 p-4">
-      <button className="btn-primary btn w-fit capitalize">Save</button>
       <input
         className={clsx(
           "rounded-lg border-none bg-cpBase p-1 text-3xl font-semibold outline-none",
@@ -83,19 +82,6 @@ const UpdateDocForm: React.FC<{
             onChange={(newValue) => debouncedUpdateContent(newValue)}
           />
         </div>
-        {/* <textarea
-          className={clsx(
-            "content__editable w-full rounded-lg border-none bg-cpSurface0 p-4 outline-none",
-            "hover:outline hover:outline-cpOverlay1 focus:outline focus:outline-cpOverlay1",
-            "transition-all duration-200 ease-in-out"
-          )}
-          rows={6}
-          placeholder="Start typing..."
-          value={content}
-          onChange={(e) => {
-            setContent(e.target.value);
-          }}
-        /> */}
       </div>
     </div>
   );
