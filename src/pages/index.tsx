@@ -1,11 +1,11 @@
 import { Conditional } from "@pandeymangg/react-conditional";
 import { type NextPage } from "next";
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/navigation";
 
 const Home: NextPage = () => {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const isAuthenticated = status === "authenticated";
 
   const router = useRouter();

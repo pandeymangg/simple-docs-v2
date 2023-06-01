@@ -3,7 +3,7 @@ import React from "react";
 import { GithubIcon } from "lucide-react";
 import { signIn } from "next-auth/react";
 import { z } from "zod";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { type SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const credentialsSchema = z.object({
@@ -38,7 +38,7 @@ const LoginPage: NextPage = () => {
         <h1 className="text-text text-center text-3xl font-bold">
           Sign in to your account
         </h1>
-
+        {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
         <form onSubmit={handleSubmit(onCredentialsSubmit)}>
           <div className="flex w-full flex-col gap-4">
             <div className="flex flex-col gap-1">
@@ -63,7 +63,6 @@ const LoginPage: NextPage = () => {
             </button>
           </div>
         </form>
-
         <button
           onClick={() => {
             void handleGithubSignIn();
