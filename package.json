@@ -39,6 +39,7 @@
     "slate-history": "0.86.0",
     "slate-hyperscript": "0.77.0",
     "slate-react": "0.90.0",
+    "styled-components": "^5.3.11",
     "superjson": "1.12.2",
     "tw-merge": "0.0.1-alpha.3",
     "zod": "^3.21.4"
