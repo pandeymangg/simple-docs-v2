@@ -1,8 +1,10 @@
 import PlateEditor from "@/components/editor";
 import Loader from "@/components/ui/Loader/Loader";
 import { api } from "@/utils/api";
+import { Conditional } from "@pandeymangg/react-conditional";
 import clsx from "clsx";
 import debounce from "lodash.debounce";
+import { BadgeCheck, Loader2 } from "lucide-react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { useMemo, useState } from "react";
@@ -11,7 +13,13 @@ const UpdateDocForm: React.FC<{
   initialData: { docId: string; title: string; content: string };
 }> = ({ initialData }) => {
   const { content: initialContent, docId, title: initialTitle } = initialData;
-  const { mutate: updateDocById } = api.doc.updateDocById.useMutation();
+  const utils = api.useContext();
+  const { mutate: updateDocById, isLoading } =
+    api.doc.updateDocById.useMutation({
+      onSuccess: () => {
+        void utils.doc.getDocById.invalidate({ id: docId });
+      },
+    });
 
   const [title, setTitle] = useState(initialTitle);
   const [content, setContent] = useState(initialContent);
@@ -23,7 +31,7 @@ const UpdateDocForm: React.FC<{
           docId,
           title,
         });
-      }, 300),
+      }, 1000),
     [docId, updateDocById]
   );
 
@@ -34,12 +42,29 @@ const UpdateDocForm: React.FC<{
           docId,
           content,
         });
-      }, 300),
+      }, 1000),
     [docId, updateDocById]
   );
 
   return (
     <div className="container mx-auto flex w-full flex-col gap-8 p-4">
+      <div className="flex items-center gap-2">
+        <Conditional
+          condition={isLoading}
+          fallback={
+            <>
+              <BadgeCheck size={16} className="text-cpGreen" />
+              <span className="text-cpGreen">Saved</span>
+            </>
+          }
+        >
+          <>
+            <Loader2 className="animate-spin" size={16} />
+            <span className="text-cpSubtext0">Saving...</span>
+          </>
+        </Conditional>
+      </div>
+
       <input
         className={clsx(
           "rounded-lg border-none bg-cpBase p-1 text-3xl font-semibold outline-none",
