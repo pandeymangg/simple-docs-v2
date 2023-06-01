@@ -19,20 +19,10 @@ const UpdateDocForm: React.FC<{
   const debouncedTitleUpdate = useMemo(
     () =>
       debounce((title: string) => {
-        updateDocById(
-          {
-            docId,
-            title,
-          },
-          {
-            onSuccess: (data) => {
-              console.log({ data });
-            },
-            onError: (err) => {
-              console.log({ err });
-            },
-          }
-        );
+        updateDocById({
+          docId,
+          title,
+        });
       }, 300),
     [docId, updateDocById]
   );
@@ -40,20 +30,10 @@ const UpdateDocForm: React.FC<{
   const debouncedUpdateContent = useMemo(
     () =>
       debounce((content: string) => {
-        updateDocById(
-          {
-            docId,
-            content,
-          },
-          {
-            onSuccess: (data) => {
-              console.log({ data });
-            },
-            onError: (err) => {
-              console.log({ err });
-            },
-          }
-        );
+        updateDocById({
+          docId,
+          content,
+        });
       }, 300),
     [docId, updateDocById]
   );
