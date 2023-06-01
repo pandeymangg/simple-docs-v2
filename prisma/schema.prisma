@@ -43,15 +43,16 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
+  id             String          @id @default(cuid())
+  name           String?
+  email          String?         @unique
+  emailVerified  DateTime?
   hashedPassword String?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
+  image          String?
+  accounts       Account[]
+  sessions       Session[]
   docs           Doc[]
+  collaborations Collaboration[]
 }
 
 model VerificationToken {
@@ -63,11 +64,33 @@ model VerificationToken {
 }
 
 model Doc {
+  id            String          @id @default(cuid())
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  title         String
+  content       String
+  authorId      String
+  author        User            @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  collaborations Collaboration[]
+}
+
+enum APPROVED_STATUS {
+  APPROVED
+  PENDING
+  REJECTED
+}
+
+model Collaboration {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  title     String
-  content   String
-  authorId  String
-  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  docId String
+  doc   Doc    @relation(fields: [docId], references: [id], onDelete: Cascade)
+
+  collaboratorId String
+  collaborator   User   @relation(fields: [collaboratorId], references: [id], onDelete: Cascade)
+
+  approvedStatus APPROVED_STATUS @default(PENDING)
 }
+

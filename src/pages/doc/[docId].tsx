@@ -17,7 +17,7 @@ const UpdateDocForm: React.FC<{
   const { mutate: updateDocById, isLoading } =
     api.doc.updateDocById.useMutation({
       onSuccess: () => {
-        void utils.doc.getDocById.invalidate({ id: docId });
+        void utils.doc.getDocById.invalidate({ docId });
       },
     });
 
@@ -96,12 +96,21 @@ const DocumentPage: NextPage = () => {
   const router = useRouter();
   const { docId } = router.query;
 
-  const { data: docData, isLoading } = api.doc.getDocById.useQuery(
+  const { mutate: createCollaboration } =
+    api.collaboration.create.useMutation();
+
+  const {
+    data: docData,
+    isLoading,
+    isError,
+    error,
+  } = api.doc.getDocById.useQuery(
     {
-      id: docId as string,
+      docId: docId as string,
     },
     {
       enabled: !!docId,
+      retry: false,
     }
   );
 
@@ -109,21 +118,49 @@ const DocumentPage: NextPage = () => {
     return <Loader />;
   }
 
-  if (!docData) {
-    return <div>404</div>;
+  if (isError) {
+    switch (error?.data?.httpStatus) {
+      case 401: {
+        return (
+          <div className="text-center">
+            <p>You are not authorized to view this document</p>
+            <button
+              className="btn-primary btn mt-4"
+              onClick={() => {
+                void createCollaboration({ docId: docId as string });
+              }}
+            >
+              Request access
+            </button>
+          </div>
+        );
+      }
+
+      case 404: {
+        return <div className="text-center">Document not found</div>;
+      }
+
+      default: {
+        return <div className="text-center">Something went wrong</div>;
+      }
+    }
   }
 
-  return (
-    <div className="mt-16 w-full">
-      <UpdateDocForm
-        initialData={{
-          docId: docData.id,
-          title: docData.title,
-          content: docData.content,
-        }}
-      />
-    </div>
-  );
+  if (docData) {
+    return (
+      <div className="mt-16 w-full">
+        <UpdateDocForm
+          initialData={{
+            docId: docData.id,
+            title: docData.title,
+            content: docData.content,
+          }}
+        />
+      </div>
+    );
+  }
+
+  return null;
 };
 
 export default DocumentPage;

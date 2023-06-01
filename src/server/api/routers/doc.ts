@@ -33,11 +33,21 @@ export const docRouter = createTRPCRouter({
   }),
 
   getDocById: protectedProcedure
-    .input(z.object({ id: z.string() }))
+    .input(z.object({ docId: z.string() }))
+    .use(verifyCurrentUserHasDocAccess)
     .query(({ ctx, input }) => {
-      return ctx.prisma.doc.findFirst({
+      const { prisma, isUserAuthorizedToAccessDoc } = ctx;
+
+      if (!isUserAuthorizedToAccessDoc) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "You are not authorized to delete this document",
+        });
+      }
+
+      return prisma.doc.findFirst({
         where: {
-          id: input.id,
+          id: input.docId,
         },
       });
     }),
