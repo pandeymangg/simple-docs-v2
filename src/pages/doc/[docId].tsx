@@ -1,3 +1,4 @@
+import PlateEditor from "@/components/editor";
 import Loader from "@/components/ui/Loader/Loader";
 import { api } from "@/utils/api";
 import clsx from "clsx";
@@ -51,7 +52,10 @@ const UpdateDocForm: React.FC<{
       />
 
       <div className="content__container w-full">
-        <textarea
+        <div className="min-h-16 bg-cpMantle">
+          <PlateEditor />
+        </div>
+        {/* <textarea
           className={clsx(
             "content__editable w-full rounded-lg border-none bg-cpSurface0 p-4 outline-none",
             "hover:outline hover:outline-cpOverlay1 focus:outline focus:outline-cpOverlay1",
@@ -63,7 +67,7 @@ const UpdateDocForm: React.FC<{
           onChange={(e) => {
             setContent(e.target.value);
           }}
-        />
+        /> */}
       </div>
     </div>
   );
