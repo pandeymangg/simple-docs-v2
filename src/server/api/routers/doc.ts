@@ -52,13 +52,40 @@ export const docRouter = createTRPCRouter({
       if (!isUserAuthorizedToAccessDoc) {
         throw new TRPCError({
           code: "UNAUTHORIZED",
-          message: "You are not authorized to delete this doc",
+          message: "You are not authorized to delete this document",
         });
       }
 
       return prisma.doc.delete({
         where: {
           id: docId,
+        },
+      });
+    }),
+
+  updateDocById: protectedProcedure
+    .input(
+      z.object({ docId: z.string(), title: z.string(), content: z.string() })
+    )
+    .use(verifyCurrentUserHasDocAccess)
+    .mutation(async ({ ctx, input }) => {
+      const { isUserAuthorizedToAccessDoc, prisma } = ctx;
+      const { docId, content, title } = input;
+
+      if (!isUserAuthorizedToAccessDoc) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "You are not authorized to update this document",
+        });
+      }
+
+      return prisma.doc.update({
+        where: {
+          id: docId,
+        },
+        data: {
+          title: title,
+          content: content,
         },
       });
     }),

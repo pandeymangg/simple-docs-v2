@@ -41,7 +41,7 @@ const DashboardPage: NextPage = () => {
                       aspectRatio: "3/4",
                     }}
                   >
-                    <Plus size={64} className="text-cpMauve" />
+                    <Plus size={64} className="text-primary" />
                   </div>
 
                   <p className="text-sm font-medium text-cpText">Blank</p>
@@ -86,7 +86,7 @@ const DashboardPage: NextPage = () => {
                         void router.push(`/doc/${doc.id}`);
                       }}
                     >
-                      <FileText size={64} className="text-cpMauve" />
+                      <FileText size={64} className="text-primary" />
                     </div>
 
                     <div className="flex items-center justify-between p-4">
