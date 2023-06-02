@@ -43,16 +43,17 @@ model Session {
 }
 
 model User {
-  id             String          @id @default(cuid())
-  name           String?
-  email          String?         @unique
-  emailVerified  DateTime?
-  hashedPassword String?
-  image          String?
-  accounts       Account[]
-  sessions       Session[]
-  docs           Doc[]
-  collaborations Collaboration[]
+  id                   String                 @id @default(cuid())
+  name                 String?
+  email                String?                @unique
+  emailVerified        DateTime?
+  hashedPassword       String?
+  image                String?
+  accounts             Account[]
+  sessions             Session[]
+  docs                 Doc[]
+  collaborations       Collaboration[]
+  collaborationRequests CollaborationRequest[]
 }
 
 model VerificationToken {
@@ -64,20 +65,26 @@ model VerificationToken {
 }
 
 model Doc {
-  id            String          @id @default(cuid())
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  title         String
-  content       String
-  authorId      String
-  author        User            @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  collaborations Collaboration[]
+  id                   String                 @id @default(cuid())
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+  title                String
+  content              String
+  authorId             String
+  author               User                   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  collaborations       Collaboration[]
+  collaborationRequests CollaborationRequest[]
 }
 
 enum APPROVED_STATUS {
   APPROVED
   PENDING
   REJECTED
+}
+
+enum ACCESS_LEVEL {
+  READ
+  WRITE
 }
 
 model Collaboration {
@@ -91,6 +98,19 @@ model Collaboration {
   collaboratorId String
   collaborator   User   @relation(fields: [collaboratorId], references: [id], onDelete: Cascade)
 
-  approvedStatus APPROVED_STATUS @default(PENDING)
+  accessLevel ACCESS_LEVEL @default(READ)
 }
 
+model CollaborationRequest {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  docId String
+  doc   Doc    @relation(fields: [docId], references: [id], onDelete: Cascade)
+
+  requesterId String
+  requester   User   @relation(fields: [requesterId], references: [id], onDelete: Cascade)
+
+  approvedStatus APPROVED_STATUS @default(PENDING)
+}
