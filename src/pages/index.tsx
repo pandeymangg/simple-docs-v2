@@ -1,4 +1,3 @@
-import { api } from "@/utils/api";
 import { Conditional } from "@pandeymangg/react-conditional";
 import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
@@ -10,10 +9,6 @@ const Home: NextPage = () => {
   const isAuthenticated = status === "authenticated";
 
   const router = useRouter();
-
-  const { data } = api.collaboration.getAll.useQuery(undefined, {
-    enabled: isAuthenticated,
-  });
 
   return (
     <>
@@ -27,16 +22,6 @@ const Home: NextPage = () => {
           <h2 className="text-subtext1 text-center text-4xl font-bold">
             Simple Docs home page...
           </h2>
-
-          <div className="flex flex-col items-center justify-center">
-            {data?.map((collab) => (
-              <div key={collab.id}>
-                <h2 className="text-subtext1 text-center text-4xl font-bold">
-                  {collab.collaboratorId} requesting access for {collab.docId}
-                </h2>
-              </div>
-            ))}
-          </div>
 
           <div className="flex flex-col items-center justify-center">
             <Conditional

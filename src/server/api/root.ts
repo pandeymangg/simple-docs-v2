@@ -1,7 +1,7 @@
 import { createTRPCRouter } from "@/server/api/trpc";
 import { docRouter } from "./routers/doc";
 import { authRouter } from "./routers/auth";
-import { collaborationsRouter } from "./routers/collaborations";
+import { collaborationRequestsRouter } from "./routers/collaborationRequests";
 
 /**
  * This is the primary router for your server.
@@ -11,7 +11,7 @@ import { collaborationsRouter } from "./routers/collaborations";
 export const appRouter = createTRPCRouter({
   doc: docRouter,
   auth: authRouter,
-  collaboration: collaborationsRouter,
+  collaborationRequest: collaborationRequestsRouter,
 });
 
 // export type definition of API

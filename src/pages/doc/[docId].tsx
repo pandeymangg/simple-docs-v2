@@ -96,8 +96,8 @@ const DocumentPage: NextPage = () => {
   const router = useRouter();
   const { docId } = router.query;
 
-  const { mutate: createCollaboration } =
-    api.collaboration.create.useMutation();
+  const { mutate: createCollaborationRequest } =
+    api.collaborationRequest.create.useMutation();
 
   const {
     data: docData,
@@ -127,7 +127,7 @@ const DocumentPage: NextPage = () => {
             <button
               className="btn-primary btn mt-4"
               onClick={() => {
-                void createCollaboration({ docId: docId as string });
+                void createCollaborationRequest({ docId: docId as string });
               }}
             >
               Request access
