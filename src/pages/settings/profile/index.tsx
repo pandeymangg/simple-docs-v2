@@ -13,10 +13,10 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 const ProfileSettingsForm = ({
   userData,
 }: {
-  userData: { name: string; avatar: string };
+  userData: { name: string; image: string };
 }) => {
   const { update } = useSession();
-  const { avatar, name } = userData;
+  const { image, name } = userData;
 
   const { mutate: updateUser } = api.user.update.useMutation();
 
@@ -28,14 +28,14 @@ const ProfileSettingsForm = ({
     resolver: zodResolver(updateUserSchema),
     defaultValues: {
       name,
-      avatar,
+      image,
     },
   });
 
   const onSubmit: SubmitHandler<TUpdateUserForm> = (data) => {
     updateUser(
       {
-        avatar: data.avatar ?? null,
+        image: data.image ?? null,
         name: data.name,
       },
       {
@@ -78,11 +78,11 @@ const ProfileSettingsForm = ({
             <input
               className="input-bordered input bg-cpCrust text-cpText"
               placeholder="avatar"
-              {...register("avatar", {})}
+              {...register("image", {})}
             />
 
-            <Conditional condition={!!errors?.avatar}>
-              <span className="text-cpRed">{errors?.avatar?.message}</span>
+            <Conditional condition={!!errors?.image}>
+              <span className="text-cpRed">{errors?.image?.message}</span>
             </Conditional>
           </label>
 
@@ -109,7 +109,7 @@ const ProfileSettingsPage: NextPage = () => {
       <ProfileSettingsForm
         userData={{
           name: userData?.user?.name ?? "",
-          avatar: userData?.user?.image ?? "",
+          image: userData?.user?.image ?? "",
         }}
       />
     );

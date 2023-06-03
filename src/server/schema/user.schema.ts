@@ -12,7 +12,7 @@ export const updateUserSchema = z.object({
   // avatar: z.string().url().optional(),
 
   // Workaround for optional string
-  avatar: z.preprocess(
+  image: z.preprocess(
     (avatar) => {
       if (!avatar || typeof avatar !== "string") return undefined;
       return avatar === "" ? undefined : avatar;

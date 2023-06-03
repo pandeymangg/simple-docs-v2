@@ -10,6 +10,8 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { env } from "@/env.mjs";
 import { prisma } from "@/server/db";
 import { compare } from "bcrypt";
+import { z } from "zod";
+import { updateUserSchema } from "./schema/user.schema";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -34,7 +36,17 @@ declare module "next-auth" {
  */
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    jwt: ({ token, user }) => {
+    jwt: ({ token, user, trigger, session }) => {
+      if (trigger === "update") {
+        const result = updateUserSchema.safeParse(session);
+
+        // validating the session object (could be any arbitrary object)
+        if (result.success) {
+          token.name = result.data.name;
+          token.picture = result.data.image;
+        }
+      }
+
       if (user) {
         return {
           ...token,
