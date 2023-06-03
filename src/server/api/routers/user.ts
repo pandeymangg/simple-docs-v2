@@ -6,7 +6,7 @@ export const userRouter = createTRPCRouter({
     .input(updateUserSchema)
     .mutation(({ ctx, input }) => {
       const { prisma, session } = ctx;
-      const { avatar, email, name } = input;
+      const { avatar, name } = input;
 
       return prisma.user.update({
         where: {
@@ -14,8 +14,7 @@ export const userRouter = createTRPCRouter({
         },
         data: {
           name,
-          email,
-          image: avatar,
+          image: avatar || null,
         },
       });
     }),

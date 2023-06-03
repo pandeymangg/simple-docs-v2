@@ -9,8 +9,21 @@ export type TRegisterForm = z.infer<typeof registerUserSchema>;
 
 export const updateUserSchema = z.object({
   name: z.string().min(1).optional(),
-  email: z.string().email().optional(),
-  avatar: z.string().url().optional(),
+  // avatar: z.string().url().optional(),
+
+  // Workaround for optional string
+  avatar: z.preprocess(
+    (avatar) => {
+      if (!avatar || typeof avatar !== "string") return undefined;
+      return avatar === "" ? undefined : avatar;
+    },
+    z
+      .string()
+      .url({
+        message: "Please enter a valid URL",
+      })
+      .optional()
+  ),
 });
 
 export type TUpdateUserForm = z.infer<typeof updateUserSchema>;
