@@ -7,6 +7,10 @@ const CollaborationRequestsPage: NextPage = () => {
   const { data: collaborationRequests, isLoading } =
     api.collaborationRequest.getAll.useQuery();
 
+  console.log({
+    collaborationRequests,
+  });
+
   if (isLoading) {
     return (
       <div className="flex min-h-screen w-full items-center justify-center">
@@ -20,9 +24,9 @@ const CollaborationRequestsPage: NextPage = () => {
       <div className="flex flex-col items-center">
         {collaborationRequests?.map((collaborationRequest) => (
           <div key={collaborationRequest.id}>
-            <p>requested by: {collaborationRequest.requesterId}</p>
+            <p>requested by: {collaborationRequest.requester.name}</p>
 
-            <p>for doc: {collaborationRequest.docId}</p>
+            <p>for doc: {collaborationRequest.doc.title}</p>
 
             <p>status: {collaborationRequest.approvedStatus}</p>
           </div>

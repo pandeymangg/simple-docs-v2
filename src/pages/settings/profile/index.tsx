@@ -59,6 +59,7 @@ const ProfileSettingsForm = ({
   return (
     <div>
       <h1>Profile Settings</h1>
+      {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <label className="flex flex-col gap-1">
