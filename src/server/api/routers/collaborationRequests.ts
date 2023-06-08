@@ -49,6 +49,7 @@ export const collaborationRequestsRouter = createTRPCRouter({
         doc: {
           select: {
             title: true,
+            id: true,
           },
         },
         requester: {

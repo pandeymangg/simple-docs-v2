@@ -21,18 +21,21 @@ const CollaborationRequestsPage: NextPage = () => {
   }
 
   return (
-    <div className="container flex w-full items-center justify-center border border-cpRed p-4">
-      <div className="flex flex-col items-center">
+    <div className="container flex w-full items-center justify-center p-4">
+      <div className="flex flex-1 flex-col items-center">
         {collaborationRequests?.map((collaborationRequest) => (
-          <RequestItem
-            key={collaborationRequest.id}
-            approvedStatus={collaborationRequest.approvedStatus}
-            docTitle={collaborationRequest.doc.title}
-            requesterId={collaborationRequest.requester.id}
-            requesterImage={collaborationRequest.requester.image}
-            requesterName={collaborationRequest.requester.name ?? "Unknown"}
-            requestId={collaborationRequest.id}
-          />
+          <div className="mb-4 w-full overflow-hidden rounded-lg border border-cpOverlay0">
+            <RequestItem
+              key={collaborationRequest.id}
+              approvedStatus={collaborationRequest.approvedStatus}
+              docId={collaborationRequest.doc.id}
+              docTitle={collaborationRequest.doc.title}
+              requesterId={collaborationRequest.requester.id}
+              requesterImage={collaborationRequest.requester.image}
+              requesterName={collaborationRequest.requester.name ?? "Unknown"}
+              requestId={collaborationRequest.id}
+            />
+          </div>
         ))}
       </div>
     </div>
