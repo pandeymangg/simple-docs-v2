@@ -8,7 +8,7 @@ export const authRouter = createTRPCRouter({
     .input(registerUserSchema)
     .mutation(async ({ ctx, input }) => {
       const { prisma } = ctx;
-      const { email, password } = input;
+      const { email, password, name } = input;
 
       const isEmailTaken = await prisma.user.findUnique({
         where: { email },
@@ -26,6 +26,7 @@ export const authRouter = createTRPCRouter({
       return prisma.user.create({
         data: {
           email,
+          name,
           hashedPassword,
         },
       });

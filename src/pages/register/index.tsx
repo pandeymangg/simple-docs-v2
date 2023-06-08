@@ -26,11 +26,16 @@ const RegisterPage: NextPage = () => {
     registerUser(
       {
         email: data.email,
+        name: data.name,
         password: data.password,
       },
       {
-        onSuccess: (data, { email, password }) => {
-          void signIn("credentials", { email, password, callbackUrl: "/" });
+        onSuccess: (_, { email, password }) => {
+          void signIn("credentials", {
+            email,
+            password,
+            callbackUrl: "/",
+          });
         },
 
         onError: (err) => {
@@ -61,6 +66,21 @@ const RegisterPage: NextPage = () => {
             <Conditional condition={!!errors?.email?.message}>
               <span className="text-xs text-error">
                 {errors?.email?.message}
+              </span>
+            </Conditional>
+          </label>
+
+          <label className="flex flex-col gap-1">
+            <span className="text-cpText">Name</span>
+            <input
+              className="input-bordered input bg-cpCrust text-cpText"
+              placeholder="Your name"
+              {...register("name")}
+            />
+
+            <Conditional condition={!!errors?.name?.message}>
+              <span className="text-xs text-error">
+                {errors?.name?.message}
               </span>
             </Conditional>
           </label>

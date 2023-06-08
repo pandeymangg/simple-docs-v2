@@ -55,6 +55,7 @@ export const collaborationRequestsRouter = createTRPCRouter({
           select: {
             name: true,
             id: true,
+            image: true,
           },
         },
       },

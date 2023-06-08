@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export const registerUserSchema = z.object({
   email: z.string().email(),
+  name: z.string().min(1),
   password: z.string().min(8),
 });
 
@@ -9,7 +10,6 @@ export type TRegisterForm = z.infer<typeof registerUserSchema>;
 
 export const updateUserSchema = z.object({
   name: z.string().min(1).optional(),
-  // avatar: z.string().url().optional(),
 
   // Workaround for optional string
   image: z.preprocess(
