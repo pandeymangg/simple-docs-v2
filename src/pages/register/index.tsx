@@ -91,6 +91,7 @@ const RegisterPage: NextPage = () => {
               className="input-bordered input bg-cpCrust text-cpText"
               placeholder="Password"
               {...register("password")}
+              type="password"
             />
 
             <Conditional condition={!!errors?.password?.message}>

@@ -75,11 +75,11 @@ const ProfileSettingsForm = ({
           </label>
 
           <label className="flex flex-col gap-1">
-            <span className="text-cpText">Username</span>
+            <span className="text-cpText">Image</span>
             <input
               className="input-bordered input bg-cpCrust text-cpText"
               placeholder="avatar"
-              {...register("image", {})}
+              {...register("image")}
             />
 
             <Conditional condition={!!errors?.image}>
