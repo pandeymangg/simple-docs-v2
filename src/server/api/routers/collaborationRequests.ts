@@ -62,4 +62,51 @@ export const collaborationRequestsRouter = createTRPCRouter({
       },
     });
   }),
+
+  accept: protectedProcedure
+    .input(
+      z.object({
+        requestId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { prisma } = ctx;
+      const { requestId } = input;
+
+      const request = await prisma.collaborationRequest.findUnique({
+        where: {
+          id: requestId,
+        },
+      });
+
+      if (!request) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Collaboration request does not exist!",
+        });
+      }
+
+      await prisma.$transaction([
+        prisma.collaborationRequest.update({
+          where: {
+            id: request.id,
+          },
+          data: {
+            approvedStatus: "APPROVED",
+          },
+        }),
+
+        prisma.collaboration.create({
+          data: {
+            collaboratorId: request.requesterId,
+            docId: request.docId,
+          },
+        }),
+      ]);
+
+      return {
+        success: true,
+        message: "Collaboration request accepted!",
+      };
+    }),
 });

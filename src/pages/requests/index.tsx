@@ -24,9 +24,11 @@ const CollaborationRequestsPage: NextPage = () => {
     <div className="container flex w-full items-center justify-center p-4">
       <div className="flex flex-1 flex-col items-center">
         {collaborationRequests?.map((collaborationRequest) => (
-          <div className="mb-4 w-full overflow-hidden rounded-lg border border-cpOverlay0">
+          <div
+            key={collaborationRequest.id}
+            className="mb-4 w-full overflow-hidden rounded-lg border border-cpOverlay0"
+          >
             <RequestItem
-              key={collaborationRequest.id}
               approvedStatus={collaborationRequest.approvedStatus}
               docId={collaborationRequest.doc.id}
               docTitle={collaborationRequest.doc.title}
