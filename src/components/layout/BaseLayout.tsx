@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "../navigation/Navbar";
-import { workSans } from "@/lib/fonts";
+import { readexPro } from "@/lib/fonts";
 import clsx from "clsx";
 
 interface IBaseLayoutProps {
@@ -12,7 +12,7 @@ const BaseLayout: React.FC<IBaseLayoutProps> = ({ children }) => {
     <main
       className={clsx(
         "flex min-h-screen flex-col items-center bg-cpBase",
-        workSans.className
+        readexPro.className
       )}
     >
       <Navbar />

@@ -1,26 +1,17 @@
-import { api } from "@/utils/api";
 import { Conditional } from "@pandeymangg/react-conditional";
 import type { NextPage } from "next";
-import React from "react";
-import { Loader2, Plus } from "lucide-react";
-import { FileText, Trash2 } from "lucide-react";
-import { useRouter } from "next/router";
-import CreateDocForm from "@/components/form";
+import React, { useState } from "react";
+import CreateDocForm from "@/components/CreateDocForm";
 import { CREATE_FORM_MODAL_ID } from "@/lib/constants";
+import clsx from "clsx";
+import MyDocs from "@/components/dashboard/MyDocs/MyDocs";
+import MyCollabs from "@/components/dashboard/MyCollabs/MyCollabs";
+import { Plus } from "lucide-react";
+
+type TTabs = "owned" | "not-owned";
 
 const DashboardPage: NextPage = () => {
-  const router = useRouter();
-  const { data: allDocs, isLoading, isFetching } = api.doc.getAll.useQuery();
-  const { mutate: deleteDoc } = api.doc.deleteDocById.useMutation();
-
-  const utils = api.useContext();
-
-  if (isLoading || isFetching)
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <Loader2 className="h-12 w-12 animate-spin text-primary" size={48} />
-      </div>
-    );
+  const [activeTab, setActiveTab] = useState<TTabs>("owned");
 
   return (
     <div className="flex w-full flex-col">
@@ -56,68 +47,35 @@ const DashboardPage: NextPage = () => {
 
       <div className="w-full">
         <div className="container mx-auto w-full p-4">
-          <div>
+          <div className="flex flex-col gap-2">
             <h2 className="font-medium">Recent documents</h2>
+
+            <div className="tabs tabs-boxed">
+              <a
+                onClick={() => setActiveTab("owned")}
+                className={clsx("tab", activeTab === "owned" && "tab-active")}
+              >
+                My documents
+              </a>
+              <a
+                onClick={() => setActiveTab("not-owned")}
+                className={clsx(
+                  "tab",
+                  activeTab === "not-owned" && "tab-active"
+                )}
+              >
+                My collaborations
+              </a>
+            </div>
           </div>
 
-          <div className="flex flex-col gap-4">
-            <Conditional condition={allDocs?.length === 0}>
-              <div className="flex flex-col gap-4">
-                <p className="text-cpText">
-                  You haven&apos;t created any documents yet.
-                </p>
-              </div>
-            </Conditional>
-            <Conditional condition={!!allDocs && allDocs?.length > 0}>
-              <div className="mt-6 flex flex-wrap gap-4">
-                {allDocs?.map((doc) => (
-                  <div
-                    key={doc.id}
-                    className="flex w-full min-w-[140px]
-                    max-w-[180px]  flex-col gap-2 rounded-sm border border-cpOverlay0"
-                  >
-                    <div
-                      className="flex w-full cursor-pointer items-center justify-center
-                bg-cpMantle hover:border-cpMauve"
-                      style={{
-                        aspectRatio: "3/4",
-                      }}
-                      onClick={() => {
-                        void router.push(`/doc/${doc.id}`);
-                      }}
-                    >
-                      <FileText size={64} className="text-primary" />
-                    </div>
+          <Conditional condition={activeTab === "owned"}>
+            <MyDocs />
+          </Conditional>
 
-                    <div className="flex items-center justify-between p-4">
-                      <p className="text-sm font-medium text-cpText">
-                        {doc.title}
-                      </p>
-
-                      <div
-                        className="btn-ghost btn"
-                        onClick={() =>
-                          deleteDoc(
-                            { docId: doc.id },
-                            {
-                              onSuccess: () => {
-                                void utils.doc.getAll.invalidate();
-                              },
-                              onError: (err) => {
-                                console.log({ err });
-                              },
-                            }
-                          )
-                        }
-                      >
-                        <Trash2 size={16} />
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </Conditional>
-          </div>
+          <Conditional condition={activeTab === "not-owned"}>
+            <MyCollabs />
+          </Conditional>
         </div>
       </div>
     </div>

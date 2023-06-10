@@ -24,15 +24,25 @@ const RequestItem: React.FC<IRequestItemProps> = (props) => {
     docTitle,
     docId,
     requestId,
-    requesterId,
     requesterImage,
     requesterName,
   } = props;
 
   const [expanded, setExpanded] = useState(false);
 
-  const { mutate: acceptRequest } =
-    api.collaborationRequest.accept.useMutation();
+  const utils = api.useContext();
+
+  const { mutate: acceptRequest } = api.collaborationRequest.accept.useMutation(
+    { onSuccess: () => utils.collaborationRequest.getAll.invalidate() }
+  );
+
+  const { mutate: rejectRequest } = api.collaborationRequest.reject.useMutation(
+    { onSuccess: () => utils.collaborationRequest.getAll.invalidate() }
+  );
+
+  const { mutate: deleteRequest } = api.collaborationRequest.delete.useMutation(
+    { onSuccess: () => utils.collaborationRequest.getAll.invalidate() }
+  );
 
   return (
     <div className="flex w-full flex-col bg-cpMantle p-4 shadow-md">
@@ -85,16 +95,40 @@ const RequestItem: React.FC<IRequestItemProps> = (props) => {
 
       <Conditional condition={expanded}>
         <div className="mt-4 flex items-center gap-2">
-          <button
-            className="text-primary"
-            onClick={() => {
-              acceptRequest({ requestId });
-            }}
-          >
-            Accept
-          </button>
+          <Conditional condition={approvedStatus === "PENDING"}>
+            <button
+              className="text-primary"
+              onClick={() => {
+                acceptRequest({ requestId });
+              }}
+            >
+              Accept
+            </button>
 
-          <button className="text-primary">Reject</button>
+            <button
+              className="text-primary"
+              onClick={() => {
+                rejectRequest({ requestId });
+              }}
+            >
+              Reject
+            </button>
+          </Conditional>
+
+          <Conditional
+            condition={
+              approvedStatus === "APPROVED" || approvedStatus === "REJECTED"
+            }
+          >
+            <button
+              className="text-cpRed"
+              onClick={() => {
+                deleteRequest({ requestId });
+              }}
+            >
+              Delete
+            </button>
+          </Conditional>
         </div>
       </Conditional>
     </div>

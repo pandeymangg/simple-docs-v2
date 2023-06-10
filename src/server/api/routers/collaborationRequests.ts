@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
+import type { CollaborationRequest } from "@prisma/client";
 
 export const collaborationRequestsRouter = createTRPCRouter({
   create: protectedProcedure
@@ -108,5 +109,78 @@ export const collaborationRequestsRouter = createTRPCRouter({
         success: true,
         message: "Collaboration request accepted!",
       };
+    }),
+
+  reject: protectedProcedure
+    .input(z.object({ requestId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const { prisma } = ctx;
+      const { requestId } = input;
+
+      let request: CollaborationRequest | null = null;
+
+      try {
+        request = await prisma.collaborationRequest.findUnique({
+          where: {
+            id: requestId,
+          },
+        });
+      } catch (err) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Something went wrong while rejecting the request!",
+        });
+      }
+
+      if (!request) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Collaboration request does not exist!",
+        });
+      }
+
+      return prisma.collaborationRequest.update({
+        where: {
+          id: request.id,
+        },
+        data: {
+          approvedStatus: "REJECTED",
+        },
+      });
+    }),
+
+  delete: protectedProcedure
+    .input(z.object({ requestId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const { prisma } = ctx;
+      const { requestId } = input;
+
+      let request: CollaborationRequest | null = null;
+
+      try {
+        request = await prisma.collaborationRequest.findUnique({
+          where: {
+            id: requestId,
+          },
+        });
+      } catch (err) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Something went wrong while deleting the request!",
+        });
+      }
+
+      if (!request) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Collaboration request does not exist!",
+        });
+      }
+
+      return prisma.collaborationRequest.delete({
+        where: {
+          id: request.id,
+        },
+      });
     }),
 });

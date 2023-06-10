@@ -1,5 +1,5 @@
 import React from "react";
-import { workSans } from "@/lib/fonts";
+import { readexPro } from "@/lib/fonts";
 import { useSession, signOut } from "next-auth/react";
 import Image from "next/image";
 import clsx from "clsx";
@@ -23,7 +23,7 @@ const Navbar: React.FC = () => {
         <div className="flex-1">
           <Link
             href="/"
-            className={clsx("btn-ghost btn normal-case", workSans.className)}
+            className={clsx("btn-ghost btn normal-case", readexPro.className)}
           >
             <div className="flex items-center gap-2">
               <FileText size={48} className="text-cpFlamingo" />
