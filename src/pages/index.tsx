@@ -2,7 +2,7 @@ import { Conditional } from "@pandeymangg/react-conditional";
 import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
   const { status } = useSession();
@@ -29,7 +29,7 @@ const Home: NextPage = () => {
               fallback={
                 <button
                   className="btn-primary btn capitalize"
-                  onClick={() => router.push("/login")}
+                  onClick={() => void router.push("/login")}
                 >
                   Log In
                 </button>
@@ -37,7 +37,7 @@ const Home: NextPage = () => {
             >
               <button
                 className="btn-primary btn capitalize"
-                onClick={() => router.push("/dashboard")}
+                onClick={() => void router.push("/dashboard")}
               >
                 Dashboard
               </button>

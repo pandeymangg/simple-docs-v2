@@ -37,7 +37,8 @@ const PlateEditor: React.FC<{
   editorValue: string;
   setEditorValue: React.Dispatch<React.SetStateAction<string>>;
   onChange: (newValue: string) => void;
-}> = ({ editorValue, setEditorValue, onChange }) => {
+  isReadOnly?: boolean;
+}> = ({ editorValue, setEditorValue, onChange, isReadOnly }) => {
   const onEditorValueChange = (newValue: Value) => {
     setEditorValue(JSON.stringify(newValue));
 
@@ -55,12 +56,17 @@ const PlateEditor: React.FC<{
   return (
     <div className="flex flex-col gap-4">
       <Plate
-        onChange={(newValue) => onEditorValueChange(newValue)}
+        onChange={(newValue) => {
+          if (isReadOnly) return;
+
+          onEditorValueChange(newValue);
+        }}
         initialValue={editorInitialValue}
         plugins={plugins}
         editableProps={{
           className: "relative focus:outline-none p-4 mt-4",
           placeholder: "Start typing...",
+          readOnly: isReadOnly,
         }}
       >
         <div className="absolute ml-2">

@@ -3,7 +3,7 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { api } from "@/utils/api";
-import { CREATE_FORM_MODAL_ID } from "@/lib/constants";
+import { CREATE_DOC_FORM_MODAL_ID } from "@/lib/constants";
 
 const formSchema = z.object({
   title: z.string().min(1).max(100),
@@ -42,13 +42,13 @@ const CreateDocForm = () => {
     >
       <input
         type="checkbox"
-        id={CREATE_FORM_MODAL_ID}
+        id={CREATE_DOC_FORM_MODAL_ID}
         className="modal-toggle"
       />
       <div className="modal">
         <div className="modal-box relative bg-cpMantle">
           <label
-            htmlFor={CREATE_FORM_MODAL_ID}
+            htmlFor={CREATE_DOC_FORM_MODAL_ID}
             className="btn-sm btn-circle btn absolute right-2 top-2"
           >
             ✕

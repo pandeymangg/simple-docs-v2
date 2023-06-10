@@ -1,8 +1,8 @@
 import { Conditional } from "@pandeymangg/react-conditional";
 import type { NextPage } from "next";
 import React, { useState } from "react";
-import CreateDocForm from "@/components/CreateDocForm";
-import { CREATE_FORM_MODAL_ID } from "@/lib/constants";
+import CreateDocForm from "@/components/dashboard/CreateDocForm";
+import { CREATE_DOC_FORM_MODAL_ID } from "@/lib/constants";
 import clsx from "clsx";
 import MyDocs from "@/components/dashboard/MyDocs/MyDocs";
 import MyCollabs from "@/components/dashboard/MyCollabs/MyCollabs";
@@ -21,7 +21,7 @@ const DashboardPage: NextPage = () => {
             <h3 className="text-cpText">Start a new document</h3>
 
             <div className="flex flex-col gap-2">
-              <label htmlFor={CREATE_FORM_MODAL_ID}>
+              <label htmlFor={CREATE_DOC_FORM_MODAL_ID}>
                 <div className="flex flex-col gap-1">
                   <div
                     className="

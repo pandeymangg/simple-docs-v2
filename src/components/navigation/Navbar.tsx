@@ -7,7 +7,7 @@ import { Palette, FileText, User } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { Conditional } from "@pandeymangg/react-conditional";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 
 const Navbar: React.FC = () => {
   const { setTheme } = useTheme();
@@ -108,7 +108,7 @@ const Navbar: React.FC = () => {
 
                   <div className="flex w-full items-center justify-between gap-4">
                     <button
-                      onClick={() => router.push("/register")}
+                      onClick={() => void router.push("/register")}
                       className="btn-primary btn flex-1 rounded-full capitalize"
                     >
                       Sign up
